@@ -1,0 +1,1722 @@
+<!doctype html>
+<html lang="id" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portofolio Kreatif - Tema Musik Indie</title>
+
+    <!-- External CSS & Libraries -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Google Fonts: Kombinasi Serif retro tebal & Sans-serif bersih -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Plus+Jakarta+Sans:wght@300;400;600;700&family=Caveat:wght@700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- FontAwesome untuk ikon instrumental & sosial media -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    <style>
+      /* Premium Editorial Aesthetics */
+      body {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        background-color: #eae0cf;
+        color: #111844;
+        overflow-x: hidden;
+      }
+
+      h1,
+      h2,
+      h3,
+      .font-serif-custom {
+        font-family: "Fraunces", serif;
+      }
+
+      .font-mono-custom {
+        font-family: "Courier New", Courier, monospace;
+      }
+
+      /* Premium Card Shadow */
+      .premium-card {
+        background-color: #fff;
+        border-radius: 1rem;
+        box-shadow: 0 10px 30px rgba(17, 24, 68, 0.08);
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+        border: 1px solid rgba(114, 136, 174, 0.2);
+      }
+      .premium-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(17, 24, 68, 0.12);
+      }
+
+      /* Premium Button */
+      .premium-btn {
+        background-color: #111844;
+        color: #eae0cf;
+        border-radius: 9999px;
+        transition: all 0.3s ease;
+      }
+      .premium-btn:hover {
+        background-color: #4b5694;
+        transform: scale(1.05);
+      }
+
+      .premium-btn-outline {
+        border: 2px solid #111844;
+        color: #111844;
+        border-radius: 9999px;
+        transition: all 0.3s ease;
+      }
+      .premium-btn-outline:hover {
+        background-color: #111844;
+        color: #eae0cf;
+      }
+
+      #projectModal {
+        backdrop-filter: blur(8px);
+        z-index: 200;
+      }
+
+      /* Canvas drawing layer */
+      #crayonCanvas {
+        cursor: crosshair;
+      }
+
+      /* Sidebar Music Player Styles */
+      #musicSidebar {
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 100;
+        box-shadow: 5px 0 30px rgba(17, 24, 68, 0.2);
+        background-color: #111844; /* Navy */
+        color: #eae0cf;
+      }
+      #musicSidebar.open {
+        transform: translateX(0);
+      }
+      .spotify-scrollbar::-webkit-scrollbar {
+        width: 6px;
+      }
+      .spotify-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .spotify-scrollbar::-webkit-scrollbar-thumb {
+        background: #4b5694;
+        border-radius: 10px;
+      }
+      .spotify-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #7288ae;
+      }
+      #floatingMusicBtn {
+        z-index: 90;
+        transition: transform 0.2s;
+        background-color: #111844;
+        color: #eae0cf;
+      }
+      #floatingMusicBtn:hover {
+        transform: translateY(-50%) scale(1.1);
+        background-color: #4b5694;
+      }
+      /* Custom slider */
+      input[type="range"] {
+        -webkit-appearance: none;
+        width: 100%;
+        background: transparent;
+      }
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        height: 12px;
+        width: 12px;
+        border-radius: 50%;
+        background: #eae0cf;
+        cursor: pointer;
+        margin-top: -4px;
+      }
+      input[type="range"]::-webkit-slider-runnable-track {
+        width: 100%;
+        height: 4px;
+        cursor: pointer;
+        background: #4b5694;
+        border-radius: 2px;
+      }
+      input[type="range"]:focus {
+        outline: none;
+      }
+      input[type="range"]:hover::-webkit-slider-runnable-track {
+        background: #7288ae;
+      }
+    </style>
+  </head>
+  <body class="min-height-screen relative">
+    <!-- Vanta.js 3D Background -->
+    <div
+      id="vanta-bg"
+      class="fixed inset-0 w-full h-full -z-10 pointer-events-none opacity-25"
+    ></div>
+
+    <!-- Header / Navigasi -->
+    <header
+      class="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center"
+    >
+      <div
+        class="text-3xl font-black tracking-tight uppercase font-serif-custom text-[#111844]"
+      >
+        ARDO<span class="text-[#4B5694]">.</span>
+      </div>
+      <nav
+        class="hidden md:flex gap-8 text-sm font-bold uppercase tracking-widest text-[#7288AE]"
+      >
+        <a href="#about" class="hover:text-[#111844] transition">Profile</a>
+        <a href="#musicality" class="hover:text-[#111844] transition"
+          >Expertise</a
+        >
+        <a href="#portfolio" class="hover:text-[#111844] transition"
+          >Projects</a
+        >
+        <a href="#certificates" class="hover:text-[#111844] transition"
+          >Certifications</a
+        >
+        <a href="#player" class="hover:text-[#111844] transition">Music</a>
+      </nav>
+      <div class="hidden md:block">
+        <a
+          href="#contact"
+          class="premium-btn px-6 py-3 font-bold text-sm tracking-wide uppercase"
+          >Let's Talk</a
+        >
+      </div>
+      <div class="md:hidden">
+        <button id="menuBtn" class="text-2xl font-bold text-[#111844]">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Mobile Navigation Menu -->
+    <div
+      id="mobileMenu"
+      class="hidden flex flex-col items-center bg-[#fff] shadow-lg py-6 md:hidden gap-6 font-bold uppercase tracking-wider text-[#4B5694]"
+    >
+      <a href="#about" class="hover:text-[#111844]">Profile</a>
+      <a href="#musicality" class="hover:text-[#111844]">Expertise</a>
+      <a href="#portfolio" class="hover:text-[#111844]">Projects</a>
+      <a href="#certificates" class="hover:text-[#111844]">Certifications</a>
+      <a href="#player" class="hover:text-[#111844]">Music</a>
+      <a href="#contact" class="premium-btn px-6 py-3 mt-2 text-[#EAE0CF]"
+        >Let's Talk</a
+      >
+    </div>
+
+    <!-- Hero Section -->
+    <section
+      id="about"
+      class="max-w-7xl mx-auto px-6 py-16 lg:py-24 grid grid-cols-1 lg:grid-cols-12 gap-16 items-center"
+    >
+      <!-- Sisi Kiri: Crayon Interactive Portrait -->
+      <div
+        class="lg:col-span-5 flex flex-col items-center"
+        data-aos="fade-right"
+      >
+        <div
+          class="relative w-80 h-96 md:w-[400px] md:h-[480px] bg-white premium-card rounded-2xl p-4 flex flex-col justify-between"
+        >
+          <!-- Area Kanvas -->
+          <div
+            class="relative w-full h-[85%] bg-[#EAE0CF] rounded-xl overflow-hidden shadow-inner"
+          >
+            <!-- Foto Profil -->
+            <img
+              src="./profile.jpeg"
+              alt="Ardo"
+              class="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-90"
+            />
+
+            <!-- Kanvas Interaktif untuk Cor-coret krayon -->
+            <canvas
+              id="crayonCanvas"
+              class="absolute inset-0 w-full h-full z-20 mix-blend-multiply opacity-80"
+            ></canvas>
+          </div>
+
+          <!-- Kontrol Kanvas -->
+          <div class="flex justify-between items-center px-2 mt-4">
+            <div class="flex gap-3">
+              <button
+                onclick="changeColor('#111844')"
+                class="w-6 h-6 rounded-full bg-[#111844] shadow-sm hover:scale-110 transition"
+              ></button>
+              <button
+                onclick="changeColor('#4B5694')"
+                class="w-6 h-6 rounded-full bg-[#4B5694] shadow-sm hover:scale-110 transition"
+              ></button>
+              <button
+                onclick="changeColor('#7288AE')"
+                class="w-6 h-6 rounded-full bg-[#7288AE] shadow-sm hover:scale-110 transition"
+              ></button>
+              <button
+                onclick="changeColor('#EC4899')"
+                class="w-6 h-6 rounded-full bg-pink-500 shadow-sm hover:scale-110 transition"
+              ></button>
+            </div>
+            <button
+              onclick="clearCanvas()"
+              class="text-xs font-bold uppercase tracking-wider text-[#7288AE] hover:text-[#111844] transition"
+            >
+              Clear
+            </button>
+          </div>
+        </div>
+        <p class="text-sm text-[#7288AE] mt-6 text-center italic">
+          Try drawing over the image with your cursor.
+        </p>
+      </div>
+
+      <!-- Sisi Kanan: Judul & Tentang -->
+      <div
+        class="lg:col-span-7 flex flex-col gap-6"
+        data-aos="fade-left"
+        data-aos-delay="200"
+      >
+        <span class="text-sm font-bold uppercase tracking-widest text-[#4B5694]"
+          >TJKT Student & Network Enthusiast</span
+        >
+        <h1
+          class="text-5xl md:text-7xl font-black leading-tight text-[#111844]"
+        >
+          Hello, <br />
+          I'm
+          <span class="text-[#4B5694] font-serif-custom italic">Ardo.</span>
+        </h1>
+        <p class="text-lg md:text-xl text-[#7288AE] leading-relaxed">
+          Siswa <strong>TJKT</strong> di <strong>SMK Wikrama Bogor</strong>.
+          Saya memiliki passion mendalam di bidang infrastruktur jaringan,
+          administrasi server, dan <em>troubleshooting</em>. Layaknya harmoni
+          musik indie yang saya sukai, saya merakit solusi IT yang elegan,
+          tangguh, dan efisien.
+        </p>
+        <div class="flex gap-4 mt-6">
+          <a
+            href="#portfolio"
+            class="premium-btn px-8 py-4 font-bold uppercase text-sm tracking-wide"
+            >View Projects</a
+          >
+          <a
+            href="#contact"
+            class="premium-btn-outline px-8 py-4 font-bold uppercase text-sm tracking-wide"
+            >Contact Me</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- Section: Core Skills -->
+    <section
+      id="musicality"
+      class="py-20 bg-[#111844] text-[#EAE0CF] relative overflow-hidden"
+    >
+      <div class="max-w-7xl mx-auto px-6 relative z-10">
+        <h2
+          class="text-4xl md:text-5xl font-black mb-4 font-serif-custom text-[#EAE0CF]"
+          data-aos="fade-up"
+        >
+          Core Expertise
+        </h2>
+        <p class="text-[#7288AE] mb-12 max-w-2xl text-lg">
+          Infrastruktur jaringan yang andal membutuhkan konfigurasi yang tepat.
+          Klik kartu di bawah untuk mendengar <em>feedback</em> sistem audio
+          kami!
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <!-- MIKROTIK -->
+          <div
+            data-aos="fade-up"
+            data-aos-delay="100"
+            onclick="playSynth('C4')"
+            class="bg-white rounded-2xl p-8 flex flex-col gap-6 cursor-pointer transform hover:-translate-y-2 transition shadow-lg select-none text-[#111844]"
+          >
+            <span class="text-4xl font-black text-[#4B5694]">01.</span>
+            <h3 class="text-xl font-bold uppercase tracking-wide">
+              Routing & Switching
+            </h3>
+            <p class="text-sm text-[#7288AE]">
+              Konfigurasi Mikrotik & Cisco. Membangun topologi jaringan lokal
+              yang stabil dan aman.
+            </p>
+          </div>
+          <!-- SERVER -->
+          <div
+            data-aos="fade-up"
+            data-aos-delay="200"
+            onclick="playSynth('E4')"
+            class="bg-white rounded-2xl p-8 flex flex-col gap-6 cursor-pointer transform hover:-translate-y-2 transition shadow-lg select-none text-[#111844]"
+          >
+            <span class="text-4xl font-black text-[#4B5694]">02.</span>
+            <h3 class="text-xl font-bold uppercase tracking-wide">
+              Server Admin
+            </h3>
+            <p class="text-sm text-[#7288AE]">
+              Manajemen Linux & Windows Server. Deploy web server, DNS, DHCP,
+              dan FTP dengan optimal.
+            </p>
+          </div>
+          <!-- TROUBLESHOOTING -->
+          <div
+            data-aos="fade-up"
+            data-aos-delay="300"
+            onclick="playSynth('G4')"
+            class="bg-white rounded-2xl p-8 flex flex-col gap-6 cursor-pointer transform hover:-translate-y-2 transition shadow-lg select-none text-[#111844]"
+          >
+            <span class="text-4xl font-black text-[#4B5694]">03.</span>
+            <h3 class="text-xl font-bold uppercase tracking-wide">
+              Troubleshooting
+            </h3>
+            <p class="text-sm text-[#7288AE]">
+              Diagnosis dan perbaikan hardware PC/Laptop serta masalah jaringan
+              (<em>packet loss, latency</em>).
+            </p>
+          </div>
+          <!-- WEB DEV -->
+          <div
+            data-aos="fade-up"
+            data-aos-delay="400"
+            onclick="playSynth('C5')"
+            class="bg-white rounded-2xl p-8 flex flex-col gap-6 cursor-pointer transform hover:-translate-y-2 transition shadow-lg select-none text-[#111844]"
+          >
+            <span class="text-4xl font-black text-[#4B5694]">04.</span>
+            <h3 class="text-xl font-bold uppercase tracking-wide">
+              Web Basics
+            </h3>
+            <p class="text-sm text-[#7288AE]">
+              Pemahaman HTML, CSS, & dasar JavaScript untuk mendukung manajemen
+              web server.
+            </p>
+          </div>
+        </div>
+        <p class="text-sm text-[#7288AE] mt-10 text-center italic">
+          Try clicking the cards to play synth notes.
+        </p>
+      </div>
+    </section>
+
+    <!-- Section: Selected Portofolio -->
+    <section id="portfolio" class="max-w-7xl mx-auto px-6 py-24 bg-[#EAE0CF]">
+      <div class="flex justify-between items-end mb-16" data-aos="fade-up">
+        <div>
+          <span
+            class="text-sm font-bold uppercase tracking-widest text-[#4B5694]"
+            >Selected Works</span
+          >
+          <h2
+            class="text-5xl md:text-6xl font-black mt-2 font-serif-custom text-[#111844]"
+          >
+            Featured Projects
+          </h2>
+        </div>
+        <div class="hidden sm:block text-xl text-[#7288AE] italic">
+          Built for scale.
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        <!-- Proyek 1 -->
+        <div
+          data-aos="zoom-in"
+          data-aos-delay="100"
+          class="premium-card overflow-hidden flex flex-col group"
+        >
+          <div
+            class="h-48 relative flex items-center justify-center overflow-hidden"
+          >
+            <img
+              src="./project1.png"
+              alt="Mikrotik Lab Setup"
+              class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-500"
+            />
+            <div
+              class="absolute inset-0 bg-[#111844] opacity-30 group-hover:opacity-0 transition duration-500"
+            ></div>
+            <div
+              class="absolute bottom-4 left-4 bg-white text-[#111844] px-3 py-1 text-xs font-bold rounded-full shadow z-10"
+            >
+              INFRASTRUCTURE
+            </div>
+          </div>
+          <div class="p-8 flex flex-col gap-4 flex-grow">
+            <h3
+              class="text-2xl font-bold text-[#111844] group-hover:text-[#4B5694] transition"
+            >
+              Mikrotik Lab Setup
+            </h3>
+            <p class="text-[#7288AE] text-sm leading-relaxed">
+              Konfigurasi router Mikrotik untuk manajemen bandwidth dan
+              distribusi koneksi internet Lab Komputer.
+            </p>
+            <div class="flex gap-2 mt-auto pt-4">
+              <span
+                class="bg-[#EAE0CF] text-[#111844] px-3 py-1 rounded-full text-xs font-bold"
+                >Mikrotik</span
+              >
+              <span
+                class="bg-[#EAE0CF] text-[#111844] px-3 py-1 rounded-full text-xs font-bold"
+                >Routing</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- Proyek 2 -->
+        <div
+          data-aos="zoom-in"
+          data-aos-delay="200"
+          class="premium-card overflow-hidden flex flex-col group"
+        >
+          <div
+            class="h-48 relative flex items-center justify-center overflow-hidden"
+          >
+            <img
+              src="./project2.png"
+              alt="Local Web Server"
+              class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-500"
+            />
+            <div
+              class="absolute inset-0 bg-[#111844] opacity-30 group-hover:opacity-0 transition duration-500"
+            ></div>
+            <div
+              class="absolute bottom-4 left-4 bg-white text-[#111844] px-3 py-1 text-xs font-bold rounded-full shadow z-10"
+            >
+              SERVER ADMIN
+            </div>
+          </div>
+          <div class="p-8 flex flex-col gap-4 flex-grow">
+            <h3
+              class="text-2xl font-bold text-[#111844] group-hover:text-[#4B5694] transition"
+            >
+              Local Web Server
+            </h3>
+            <p class="text-[#7288AE] text-sm leading-relaxed">
+              Pembangunan LEMP Stack berbasis Ubuntu Server untuk
+              <em>hosting</em> aplikasi web intranet sekolah.
+            </p>
+            <div class="flex gap-2 mt-auto pt-4">
+              <span
+                class="bg-[#EAE0CF] text-[#111844] px-3 py-1 rounded-full text-xs font-bold"
+                >Linux</span
+              >
+              <span
+                class="bg-[#EAE0CF] text-[#111844] px-3 py-1 rounded-full text-xs font-bold"
+                >Nginx</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- Proyek 3 -->
+        <div
+          data-aos="zoom-in"
+          data-aos-delay="300"
+          class="premium-card overflow-hidden flex flex-col group"
+        >
+          <div
+            class="h-48 relative flex items-center justify-center overflow-hidden"
+          >
+            <img
+              src="./project3.png"
+              alt="Net-Diagnostic Web"
+              class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-500"
+            />
+            <div
+              class="absolute inset-0 bg-[#111844] opacity-30 group-hover:opacity-0 transition duration-500"
+            ></div>
+            <div
+              class="absolute bottom-4 left-4 bg-white text-[#111844] px-3 py-1 text-xs font-bold rounded-full shadow z-10"
+            >
+              DEV & TOOLS
+            </div>
+          </div>
+          <div class="p-8 flex flex-col gap-4 flex-grow">
+            <h3
+              class="text-2xl font-bold text-[#111844] group-hover:text-[#4B5694] transition"
+            >
+              Net-Diagnostic Web
+            </h3>
+            <p class="text-[#7288AE] text-sm leading-relaxed">
+              Web-based dashboard untuk memonitor <em>ping latency</em> dan
+              status perangkat di jaringan lokal.
+            </p>
+            <div class="flex gap-2 mt-auto pt-4">
+              <span
+                class="bg-[#EAE0CF] text-[#111844] px-3 py-1 rounded-full text-xs font-bold"
+                >Web</span
+              >
+              <span
+                class="bg-[#EAE0CF] text-[#111844] px-3 py-1 rounded-full text-xs font-bold"
+                >Dashboard</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section: Certificates -->
+    <section
+      id="certificates"
+      class="max-w-7xl mx-auto px-6 py-20 bg-[#EAE0CF]"
+    >
+      <div
+        class="flex flex-col md:flex-row justify-between items-end mb-12"
+        data-aos="fade-up"
+      >
+        <div>
+          <span
+            class="text-sm font-bold uppercase tracking-widest text-[#4B5694]"
+            >Validation</span
+          >
+          <h2
+            class="text-4xl md:text-5xl font-black mt-2 font-serif-custom text-[#111844]"
+          >
+            Certifications
+          </h2>
+        </div>
+        <p
+          class="text-[#7288AE] text-sm max-w-sm text-right mt-4 md:mt-0 leading-relaxed"
+        >
+          Bukti kompetensi dan validasi <em>skill</em> yang diakui oleh lembaga
+          dan industri profesional.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div
+          onclick="
+            viewCertificate(
+              './sertifikat-aguna.png',
+              'Aguna Course - Virtual Machine Fundamental',
+            )
+          "
+          data-aos="zoom-in"
+          data-aos-delay="100"
+          class="relative w-full aspect-[4/3] overflow-hidden rounded-2xl shadow-xl group cursor-pointer border-2 border-white"
+        >
+          <!-- The Certificate Image -->
+          <img
+            src="./sertifikat-aguna.png"
+            alt="Sertifikat Aguna Course"
+            class="w-full h-full object-cover transition duration-700 group-hover:scale-110"
+          />
+
+          <!-- The Hover Overlay (Dark overlay with text) -->
+          <div
+            class="absolute inset-0 bg-[#111844]/90 opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col items-center justify-center p-6 text-center backdrop-blur-sm"
+          >
+            <h3
+              class="text-xl md:text-2xl font-black text-white mb-1 font-serif-custom translate-y-4 group-hover:translate-y-0 transition-transform duration-500 ease-out"
+            >
+              Aguna Course
+            </h3>
+            <p
+              class="text-xs text-[#EAE0CF] font-bold mb-3 tracking-widest uppercase translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75 ease-out"
+            >
+              Virtual Machine Fundamental
+            </p>
+            <p
+              class="text-xs text-gray-200 leading-relaxed translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-150 ease-out"
+            >
+              Penguasaan konsep dan instalasi mesin virtual untuk kebutuhan
+              server dan simulasi sistem operasi.
+            </p>
+            <span
+              class="text-[10px] text-[#111844] mt-4 font-mono font-bold bg-[#EAE0CF] py-1 px-3 rounded-full translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-200 ease-out shadow-lg"
+              >AC-731-71115618-06</span
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Project Modals Removed -->
+
+    <!-- Floating Music Button -->
+    <button
+      id="floatingMusicBtn"
+      onclick="toggleSidebar()"
+      class="fixed left-0 top-1/2 -translate-y-1/2 bg-[#111844] text-white p-3 rounded-r-lg shadow-lg flex items-center justify-center border-y-2 border-r-2 border-[#4B5694] cursor-pointer"
+    >
+      <i
+        id="floatingMusicIcon"
+        class="fa-solid fa-music text-2xl text-[#EAE0CF]"
+      ></i>
+    </button>
+
+    <!-- Sidebar Music Player -->
+    <aside
+      id="musicSidebar"
+      class="fixed left-0 top-0 h-full w-80 md:w-96 bg-[#111844] text-[#EAE0CF] transform -translate-x-full flex flex-col font-sans border-r border-[#4B5694] shadow-2xl"
+    >
+      <div
+        class="p-4 flex justify-between items-center border-b border-[#4B5694]"
+      >
+        <h2 class="text-xl font-bold flex items-center gap-2">
+          <i class="fa-brands fa-spotify text-[#EAE0CF]"></i> Music Player
+        </h2>
+        <button
+          onclick="toggleSidebar()"
+          class="text-[#7288AE] hover:text-white transition"
+        >
+          <i class="fa-solid fa-times text-xl"></i>
+        </button>
+      </div>
+
+      <!-- Search -->
+      <div class="p-4">
+        <div class="relative">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Search for songs..."
+            class="w-full bg-[#4B5694] text-white rounded-full py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-[#EAE0CF] text-sm placeholder-gray-300"
+          />
+          <i
+            class="fa-solid fa-search absolute left-4 top-2.5 text-gray-200"
+          ></i>
+        </div>
+      </div>
+
+      <!-- Search Results -->
+      <div
+        id="searchResults"
+        class="flex-grow overflow-y-auto spotify-scrollbar px-2 pb-24"
+      >
+        <!-- Default State -->
+        <div class="text-center text-[#7288AE] mt-10 text-sm">
+          <i class="fa-solid fa-headphones text-4xl mb-3 opacity-50"></i>
+          <p>Search for artists or songs to play.</p>
+        </div>
+      </div>
+
+      <!-- Queue View -->
+      <div
+        id="queueView"
+        class="hidden flex-grow overflow-y-auto spotify-scrollbar px-2 pb-24"
+      >
+        <div class="text-center text-[#7288AE] mt-10 text-sm">
+          <i class="fa-solid fa-list text-4xl mb-3 opacity-50"></i>
+          <p>Your queue is empty.</p>
+        </div>
+      </div>
+
+      <!-- Now Playing Bar -->
+      <div
+        class="absolute bottom-0 w-full bg-[#111844] border-t border-[#4B5694] p-4"
+      >
+        <div class="flex items-center gap-3 mb-3">
+          <img
+            id="nowPlayingImg"
+            src="https://via.placeholder.com/50"
+            alt="Album Cover"
+            class="w-12 h-12 rounded hidden shadow-lg"
+          />
+          <div
+            id="nowPlayingPlaceholder"
+            class="w-12 h-12 rounded bg-[#4B5694] flex items-center justify-center shadow-lg"
+          >
+            <i class="fa-solid fa-music text-gray-300"></i>
+          </div>
+          <div class="flex-grow min-w-0">
+            <h4 id="nowPlayingTitle" class="text-sm font-bold truncate">
+              No song playing
+            </h4>
+            <p id="nowPlayingArtist" class="text-xs text-[#7288AE] truncate">
+              -
+            </p>
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="flex flex-col gap-2">
+          <div class="flex justify-between items-center px-4">
+            <div class="w-8"></div>
+            <!-- spacer -->
+            <div class="flex justify-center items-center gap-4">
+              <button
+                onclick="playPrevSong()"
+                class="text-[#7288AE] hover:text-white transition"
+              >
+                <i class="fa-solid fa-backward-step"></i>
+              </button>
+              <button
+                id="mainPlayBtn"
+                onclick="toggleMainPlay()"
+                class="w-8 h-8 rounded-full bg-[#EAE0CF] text-[#111844] flex items-center justify-center hover:scale-105 transition"
+              >
+                <i class="fa-solid fa-play"></i>
+              </button>
+              <button
+                onclick="playNextSong()"
+                class="text-[#7288AE] hover:text-white transition"
+              >
+                <i class="fa-solid fa-forward-step"></i>
+              </button>
+            </div>
+            <button
+              onclick="toggleQueueView()"
+              class="text-[#7288AE] hover:text-white transition w-8 text-right"
+              title="Queue"
+            >
+              <i class="fa-solid fa-list-ul"></i>
+            </button>
+          </div>
+          <!-- Progress & Volume -->
+          <div class="flex flex-col gap-2">
+            <div class="flex items-center gap-2 text-xs text-[#7288AE]">
+              <span id="currentTimeDisplay">0:00</span>
+              <input
+                type="range"
+                id="progressBar"
+                min="0"
+                max="100"
+                value="0"
+                class="flex-grow"
+              />
+              <span id="durationDisplay">0:30</span>
+            </div>
+            <div class="flex items-center gap-2 text-[#7288AE] w-full mt-1">
+              <i class="fa-solid fa-volume-low text-xs"></i>
+              <input
+                type="range"
+                id="volumeBar"
+                min="0"
+                max="1"
+                step="0.01"
+                value="1"
+                class="flex-grow"
+              />
+              <i class="fa-solid fa-volume-high text-xs"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Section: Music Player Retro (Mockup & Visualizer) -->
+    <section id="player" class="hidden">
+      <div class="max-w-4xl mx-auto px-6">
+        <div
+          class="bg-white premium-card p-6 md:p-8 flex flex-col md:flex-row gap-8 items-center"
+        >
+          <!-- Cassette / Cover Visual -->
+          <div
+            class="w-48 h-48 bg-[#4B5694] rounded-2xl flex items-center justify-center relative overflow-hidden flex-shrink-0 shadow-inner"
+          >
+            <div
+              class="w-32 h-32 rounded-full border-8 border-black bg-zinc-900 flex items-center justify-center"
+            >
+              <div
+                class="w-12 h-12 rounded-full bg-white border-4 border-black"
+              ></div>
+            </div>
+            <!-- Scribbled labels -->
+            <div
+              class="absolute top-2 left-2 bg-white text-black px-2 py-0.5 font-bold text-xs select-none border border-black"
+            >
+              DEMO TAPE
+            </div>
+          </div>
+
+          <!-- Kontrol Lagu & Waveform -->
+          <div class="flex-grow w-full flex flex-col gap-4">
+            <div>
+              <span
+                class="text-xs font-bold uppercase tracking-wider text-pink-600"
+                >Kini Memutar</span
+              >
+              <h3 id="songTitle" class="text-3xl font-black">
+                Konservatif - Tribute (The Adams)
+              </h3>
+              <p id="songArtist" class="text-gray-500 font-serif-custom">
+                Diaransemen ulang secara digital
+              </p>
+            </div>
+
+            <!-- Visualizer -->
+            <div
+              id="visualizer"
+              class="h-12 bg-zinc-100 border-2 border-black rounded flex items-end justify-center gap-2 p-2"
+            >
+              <div class="bar"></div>
+              <div class="bar"></div>
+              <div class="bar"></div>
+              <div class="bar"></div>
+              <div class="bar"></div>
+              <div class="bar"></div>
+              <div class="bar"></div>
+              <div class="bar"></div>
+              <div class="bar"></div>
+              <div class="bar"></div>
+            </div>
+
+            <!-- Tombol Kontrol Player -->
+            <div class="flex justify-between items-center mt-2">
+              <div class="flex gap-4">
+                <button
+                  onclick="prevTrack()"
+                  class="text-2xl hover:text-orange-600 transition"
+                >
+                  <i class="fa-solid fa-backward-step"></i>
+                </button>
+                <button
+                  id="playBtn"
+                  onclick="togglePlay()"
+                  class="text-4xl hover:text-pink-600 transition text-pink-500"
+                >
+                  <i class="fa-solid fa-circle-play"></i>
+                </button>
+                <button
+                  onclick="nextTrack()"
+                  class="text-2xl hover:text-orange-600 transition"
+                >
+                  <i class="fa-solid fa-forward-step"></i>
+                </button>
+              </div>
+              <div
+                class="text-sm font-mono font-bold bg-white px-2 py-1 border border-black"
+                id="timeCode"
+              >
+                00:00 / 02:40
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section: Contact Form -->
+    <section id="contact" class="max-w-4xl mx-auto px-6 py-24">
+      <div class="text-center mb-16">
+        <span
+          class="text-sm font-bold uppercase tracking-widest text-[#4B5694] inline-block"
+          >Let's Collaborate</span
+        >
+        <h2
+          class="text-4xl md:text-5xl font-black mt-2 font-serif-custom text-[#111844]"
+        >
+          Get In Touch
+        </h2>
+        <p class="text-[#7288AE] mt-4 max-w-lg mx-auto text-lg">
+          Butuh infrastruktur jaringan yang tangguh atau website yang elegan?
+          Mari diskusikan proyek Anda selanjutnya!
+        </p>
+      </div>
+
+      <form
+        onsubmit="submitContactForm(event)"
+        class="bg-white premium-card p-10 md:p-14 flex flex-col gap-8"
+      >
+        <input
+          type="hidden"
+          name="access_key"
+          value="863f4dcf-e92a-4570-8ad7-30019ee90792"
+        />
+        <input
+          type="hidden"
+          name="subject"
+          value="Pesan Baru dari Ardo Portfolio!"
+        />
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="flex flex-col gap-3">
+            <label
+              class="font-bold text-sm uppercase text-[#111844] tracking-wider"
+              >Nama Anda</label
+            >
+            <input
+              type="text"
+              name="name"
+              placeholder="John Doe"
+              class="border border-gray-200 p-4 bg-gray-50 focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#4B5694] rounded-xl transition"
+              required
+            />
+          </div>
+          <div class="flex flex-col gap-3">
+            <label
+              class="font-bold text-sm uppercase text-[#111844] tracking-wider"
+              >Email</label
+            >
+            <input
+              type="email"
+              name="email"
+              placeholder="john@email.com"
+              class="border border-gray-200 p-4 bg-gray-50 focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#4B5694] rounded-xl transition"
+              required
+            />
+          </div>
+        </div>
+        <div class="flex flex-col gap-3">
+          <label
+            class="font-bold text-sm uppercase text-[#111844] tracking-wider"
+            >Pesan Kolaborasi</label
+          >
+          <textarea
+            name="message"
+            rows="5"
+            placeholder="Saya memiliki proyek menarik untuk didiskusikan..."
+            class="border border-gray-200 p-4 bg-gray-50 focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#4B5694] rounded-xl transition resize-none"
+            required
+          ></textarea>
+        </div>
+        <button
+          type="submit"
+          class="premium-btn py-4 font-bold uppercase tracking-widest text-sm mt-4"
+        >
+          Send Message
+        </button>
+      </form>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#111844] text-[#EAE0CF] py-16">
+      <div
+        class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8"
+      >
+        <div class="flex flex-col gap-2 text-center md:text-left">
+          <p class="font-bold uppercase tracking-widest text-sm text-[#7288AE]">
+            Ardo Portfolio
+          </p>
+          <p class="font-serif-custom text-xl tracking-tight text-white">
+            TJKT Student & Network Enthusiast
+          </p>
+        </div>
+
+        <!-- Sosial Media -->
+        <div class="flex gap-6 text-2xl">
+          <a href="#" class="hover:text-white text-[#7288AE] transition"
+            ><i class="fa-brands fa-instagram"></i
+          ></a>
+          <a href="#" class="hover:text-white text-[#7288AE] transition"
+            ><i class="fa-brands fa-linkedin"></i
+          ></a>
+          <a href="#" class="hover:text-white text-[#7288AE] transition"
+            ><i class="fa-brands fa-github"></i
+          ></a>
+          <a href="#" class="hover:text-white text-[#7288AE] transition"
+            ><i class="fa-brands fa-spotify"></i
+          ></a>
+        </div>
+      </div>
+      <div
+        class="text-center text-sm text-[#7288AE] mt-12 border-t border-[#4B5694] pt-8"
+      >
+        &copy; 2026 Ardo Portfolio. Hak Cipta Dilindungi Undang-Undang.
+      </div>
+    </footer>
+
+    <!-- Logika Interaktivitas (Kanvas Krayon, Web Audio API Synth, & Player Musik) -->
+    <script>
+      // 1. Mobile Menu Toggle
+      const menuBtn = document.getElementById("menuBtn");
+      const mobileMenu = document.getElementById("mobileMenu");
+
+      menuBtn.addEventListener("click", () => {
+        mobileMenu.classList.toggle("hidden");
+      });
+
+      // Close mobile menu when a link is clicked
+      const mobileLinks = mobileMenu.querySelectorAll("a");
+      mobileLinks.forEach((link) => {
+        link.addEventListener("click", () => {
+          mobileMenu.classList.add("hidden");
+        });
+      });
+
+      // 2. Kanvas Gambar Crayon Interaktif
+      const canvas = document.getElementById("crayonCanvas");
+      const ctx = canvas.getContext("2d");
+      let drawing = false;
+      let brushColor = "#EC4899"; // Default Pink
+
+      // Atur ukuran kanvas sesuai elemen pembungkusnya
+      function resizeCanvas() {
+        canvas.width = canvas.parentElement.clientWidth;
+        canvas.height = canvas.parentElement.clientHeight;
+        clearCanvas();
+      }
+
+      window.addEventListener("load", resizeCanvas);
+      window.addEventListener("resize", resizeCanvas);
+
+      function changeColor(color) {
+        brushColor = color;
+      }
+
+      function clearCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // Tambahkan sedikit noise/tekstur krayon acak di awal agar terasa organik
+        ctx.strokeStyle = brushColor;
+      }
+
+      function startDrawing(e) {
+        drawing = true;
+        draw(e);
+      }
+
+      function stopDrawing() {
+        drawing = false;
+        ctx.beginPath();
+      }
+
+      function draw(e) {
+        if (!drawing) return;
+
+        // Dapatkan posisi koordinat akurat (mouse atau layar sentuh)
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        const x = clientX - rect.left;
+        const y = clientY - rect.top;
+
+        ctx.lineWidth = 14;
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+
+        // Mensimulasikan tekstur krayon yang kasar (menggambar banyak titik kecil di sekitar kuas)
+        ctx.strokeStyle = brushColor;
+        ctx.lineTo(x, y);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+
+        // Coretan efek krayon berantakan tambahan
+        for (let i = 0; i < 5; i++) {
+          const offsetX = (Math.random() - 0.5) * 12;
+          const offsetY = (Math.random() - 0.5) * 12;
+          ctx.fillStyle = brushColor;
+          ctx.fillRect(x + offsetX, y + offsetY, 2, 2);
+        }
+      }
+
+      canvas.addEventListener("mousedown", startDrawing);
+      canvas.addEventListener("mousemove", draw);
+      canvas.addEventListener("mouseup", stopDrawing);
+      canvas.addEventListener("mouseleave", stopDrawing);
+
+      canvas.addEventListener("touchstart", (e) => {
+        e.preventDefault();
+        startDrawing(e);
+      });
+      canvas.addEventListener("touchmove", (e) => {
+        e.preventDefault();
+        draw(e);
+      });
+      canvas.addEventListener("touchend", stopDrawing);
+
+      // 3. Web Audio API - Synthesizer Interaktif untuk Bagian "Musicality"
+      let audioCtx;
+      function playSynth(note) {
+        // Aktifkan AudioContext setelah interaksi pengguna
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+
+        const osc = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+
+        // Ubah notasi nada menjadi frekuensi Hz
+        const freqs = {
+          C4: 261.63,
+          E4: 329.63,
+          G4: 392.0,
+          C5: 523.25,
+        };
+
+        osc.type = "sawtooth"; // Suara kasar khas synthesizer retro
+        osc.frequency.setValueAtTime(freqs[note] || 440, audioCtx.currentTime);
+
+        // Envelope suara (fade out agar tidak berisik)
+        gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(
+          0.001,
+          audioCtx.currentTime + 1.2,
+        );
+
+        osc.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        osc.start();
+        osc.stop(audioCtx.currentTime + 1.2);
+      }
+
+      // 4. Sidebar Music Player (iTunes API)
+      const musicSidebar = document.getElementById("musicSidebar");
+      const searchInput = document.getElementById("searchInput");
+      const searchResults = document.getElementById("searchResults");
+
+      const nowPlayingTitle = document.getElementById("nowPlayingTitle");
+      const nowPlayingArtist = document.getElementById("nowPlayingArtist");
+      const nowPlayingImg = document.getElementById("nowPlayingImg");
+      const nowPlayingPlaceholder = document.getElementById(
+        "nowPlayingPlaceholder",
+      );
+      const mainPlayBtn = document.getElementById("mainPlayBtn");
+      const progressBar = document.getElementById("progressBar");
+      const currentTimeDisplay = document.getElementById("currentTimeDisplay");
+      const volumeBar = document.getElementById("volumeBar");
+
+      let audio = new Audio();
+      let currentPlaylist = [];
+      let currentSongIndex = -1;
+      let currentPlayingUrl = null;
+      let isPlaying = false;
+      let searchTimeout = null;
+      let userQueue = [];
+
+      function toggleSidebar() {
+        musicSidebar.classList.toggle("-translate-x-full");
+      }
+
+      // Close sidebar when clicking outside
+      document.addEventListener("click", (event) => {
+        const floatingBtn = document.getElementById("floatingMusicBtn");
+        if (!musicSidebar.classList.contains("-translate-x-full")) {
+          if (
+            !musicSidebar.contains(event.target) &&
+            !floatingBtn.contains(event.target)
+          ) {
+            musicSidebar.classList.add("-translate-x-full");
+          }
+        }
+      });
+
+      // Format time helper (seconds to M:SS)
+      function formatTime(secs) {
+        if (isNaN(secs)) return "0:00";
+        const m = Math.floor(secs / 60);
+        const s = Math.floor(secs % 60)
+          .toString()
+          .padStart(2, "0");
+        return `${m}:${s}`;
+      }
+
+      let defaultPlaylistCache = [];
+      let defaultPlaylistHtml = "";
+
+      function restoreDefaultMusic() {
+        if (defaultPlaylistCache.length > 0) {
+          currentPlaylist = defaultPlaylistCache;
+          searchResults.innerHTML = defaultPlaylistHtml;
+        } else {
+          searchResults.innerHTML = `
+            <div class="text-center text-[#7288AE] mt-10 text-sm">
+              <i class="fa-solid fa-headphones text-4xl mb-3 opacity-50"></i>
+              <p>Type to search...</p>
+            </div>`;
+        }
+      }
+
+      function performSearch(query) {
+        if (query.length < 2) {
+          if (query.length === 0) {
+            restoreDefaultMusic();
+          } else {
+            searchResults.innerHTML = `
+              <div class="text-center text-[#7288AE] mt-10 text-sm">
+                <i class="fa-solid fa-headphones text-4xl mb-3 opacity-50"></i>
+                <p>Type to search...</p>
+              </div>`;
+          }
+          return;
+        }
+
+        searchResults.innerHTML = `<div class="text-center text-gray-500 mt-10"><i class="fa-solid fa-circle-notch fa-spin text-2xl"></i></div>`;
+
+        fetch(
+          `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=song&limit=15`,
+        )
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.results.length === 0) {
+              searchResults.innerHTML = `<div class="text-center text-gray-500 mt-10 text-sm">No results found for "${query}"</div>`;
+              return;
+            }
+
+            currentPlaylist = data.results.filter((song) => song.previewUrl);
+            let html = '<div class="flex flex-col gap-1 mt-2">';
+            currentPlaylist.forEach((song, index) => {
+              const songData = encodeURIComponent(JSON.stringify(song));
+              html += `
+                <div onclick="playSong(${index})" 
+                     class="flex justify-between items-center p-2 hover:bg-[#4B5694] rounded cursor-pointer group">
+                  <div class="flex items-center gap-3 overflow-hidden flex-grow">
+                    <div class="relative w-10 h-10 flex-shrink-0">
+                      <img src="${song.artworkUrl100}" class="w-full h-full rounded">
+                      <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition rounded">
+                        <i class="fa-solid fa-play text-white text-xs"></i>
+                      </div>
+                    </div>
+                    <div class="min-w-0 flex-grow">
+                      <h4 class="text-sm font-semibold truncate text-white">${song.trackName}</h4>
+                      <p class="text-xs text-[#EAE0CF] truncate">${song.artistName}</p>
+                    </div>
+                  </div>
+                  <button onclick="addToQueue(event, '${songData}')" class="text-[#EAE0CF] hover:text-white px-2 opacity-0 group-hover:opacity-100 transition flex-shrink-0" title="Add to Queue">
+                    <i class="fa-solid fa-plus"></i>
+                  </button>
+                </div>
+              `;
+            });
+            html += "</div>";
+            searchResults.innerHTML = html;
+          })
+          .catch((err) => {
+            searchResults.innerHTML = `<div class="text-center text-red-500 mt-10 text-sm">Error loading results.</div>`;
+          });
+      }
+
+      // Handle Search Input with Debounce
+      searchInput.addEventListener("input", (e) => {
+        clearTimeout(searchTimeout);
+        const query = e.target.value.trim();
+        searchTimeout = setTimeout(() => {
+          performSearch(query);
+        }, 500);
+      });
+
+      // Load initial default music so the sidebar isn't empty
+      window.addEventListener("DOMContentLoaded", () => {
+        const allIndoArtists = [
+          "The Adams",
+          "FSTVLST",
+          "The Jeblog",
+          "Dongker",
+          "Perunggu",
+          "Alkateri",
+          "Kelompok Penerbang Roket",
+          "Iwan Fals",
+          "Nadin Amizah",
+          "Bernadya",
+          "The Paps",
+          "Sheila On 7",
+          "Dewa 19",
+          "Efek Rumah Kaca",
+          "Payung Teduh",
+          "Fourtwnty",
+          "Pamungkas",
+          "Kunto Aji",
+          "Hindia",
+          "Danilla",
+          "Jason Ranti",
+          "Mocca",
+          "White Shoes & The Couples Company",
+          "Burgerkill",
+          "Seringai",
+          "Realis",
+          "Barasuara",
+          "Isyana Sarasvati",
+          "Raisa",
+          "Maliq & D'Essentials",
+          "Endah N Rhesa",
+          "Sore",
+          "Naif",
+          "Kahitna",
+          "Glenn Fredly",
+          "Tulus",
+          "Juicy Luicy",
+          "Lomba Sihir",
+          "Kangen Band",
+          "Wali",
+          "Armada",
+          "Tipe-X",
+          "Shaggydog",
+          "Killed by Butterfly",
+        ];
+
+        // Pilih 6 artis secara acak setiap kali website dimuat agar tidak membosankan dan API tidak over-load
+        const shuffled = allIndoArtists.sort(() => 0.5 - Math.random());
+        const defaultArtists = shuffled.slice(0, 6);
+
+        searchResults.innerHTML = `<div class="text-center text-gray-500 mt-10"><i class="fa-solid fa-circle-notch fa-spin text-2xl"></i><p class="mt-2 text-sm">Loading local playlist...</p></div>`;
+
+        Promise.all(
+          defaultArtists.map((artist) =>
+            fetch(
+              `https://itunes.apple.com/search?term=${encodeURIComponent(artist)}&entity=song&limit=10`,
+            ).then((res) => res.json()),
+          ),
+        )
+          .then((resultsArray) => {
+            let allSongs = [];
+            resultsArray.forEach((data, index) => {
+              if (data.results) {
+                const expectedArtist = defaultArtists[index].toLowerCase();
+                const validSongs = data.results
+                  .filter((song) =>
+                    song.artistName.toLowerCase().includes(expectedArtist),
+                  )
+                  .slice(0, 3);
+                allSongs = allSongs.concat(validSongs);
+              }
+            });
+
+            if (allSongs.length === 0) {
+              searchResults.innerHTML = `<div class="text-center text-gray-500 mt-10 text-sm">No default songs found.</div>`;
+              return;
+            }
+
+            currentPlaylist = allSongs.filter((song) => song.previewUrl);
+            defaultPlaylistCache = [...currentPlaylist];
+            let html = '<div class="flex flex-col gap-1 mt-2">';
+            currentPlaylist.forEach((song, index) => {
+              const songData = encodeURIComponent(JSON.stringify(song));
+              html += `
+              <div onclick="playSong(${index})" 
+                   class="flex justify-between items-center p-2 hover:bg-[#4B5694] rounded cursor-pointer group">
+                <div class="flex items-center gap-3 overflow-hidden flex-grow">
+                  <div class="relative w-10 h-10 flex-shrink-0">
+                    <img src="${song.artworkUrl100}" class="w-full h-full rounded">
+                    <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition rounded">
+                      <i class="fa-solid fa-play text-white text-xs"></i>
+                    </div>
+                  </div>
+                  <div class="min-w-0 flex-grow">
+                    <h4 class="text-sm font-semibold truncate text-white">${song.trackName}</h4>
+                    <p class="text-xs text-[#EAE0CF] truncate">${song.artistName}</p>
+                  </div>
+                </div>
+                <button onclick="addToQueue(event, '${songData}')" class="text-[#EAE0CF] hover:text-white px-2 opacity-0 group-hover:opacity-100 transition flex-shrink-0" title="Add to Queue">
+                  <i class="fa-solid fa-plus"></i>
+                </button>
+              </div>
+            `;
+            });
+            html += "</div>";
+            defaultPlaylistHtml = html;
+            searchResults.innerHTML = html;
+          })
+          .catch((err) => {
+            searchResults.innerHTML = `<div class="text-center text-red-500 mt-10 text-sm">Error loading playlist.</div>`;
+          });
+      });
+
+      function playSong(index) {
+        const song = currentPlaylist[index];
+        if (!song) return;
+
+        if (currentSongIndex === index && isPlaying) {
+          toggleMainPlay();
+          return;
+        }
+
+        currentSongIndex = index;
+        executePlay(song);
+      }
+
+      function executePlay(song) {
+        // Setup UI
+        nowPlayingTitle.textContent = song.trackName;
+        nowPlayingArtist.textContent = song.artistName;
+        nowPlayingImg.src = song.artworkUrl100;
+        nowPlayingImg.classList.remove("hidden");
+        nowPlayingPlaceholder.classList.add("hidden");
+
+        // Setup Audio
+        audio.src = song.previewUrl;
+        audio.play();
+        currentPlayingUrl = song.previewUrl;
+        isPlaying = true;
+        updatePlayButton();
+      }
+
+      function addToQueue(event, songStr) {
+        event.stopPropagation(); // prevent clicking the row
+        const song = JSON.parse(decodeURIComponent(songStr));
+        userQueue.push(song);
+        renderQueue();
+
+        // Visual feedback
+        const btn = event.currentTarget;
+        btn.innerHTML = '<i class="fa-solid fa-check text-[#1db954]"></i>';
+        setTimeout(() => {
+          btn.innerHTML = '<i class="fa-solid fa-plus"></i>';
+        }, 1000);
+      }
+
+      function toggleQueueView() {
+        const searchResults = document.getElementById("searchResults");
+        const queueView = document.getElementById("queueView");
+        if (queueView.classList.contains("hidden")) {
+          searchResults.classList.add("hidden");
+          queueView.classList.remove("hidden");
+          renderQueue();
+        } else {
+          searchResults.classList.remove("hidden");
+          queueView.classList.add("hidden");
+        }
+      }
+
+      let dragQueueIndex = null;
+
+      function handleDragStart(e, index) {
+        dragQueueIndex = index;
+        e.dataTransfer.effectAllowed = "move";
+        setTimeout(() => e.target.classList.add("opacity-50"), 0);
+      }
+
+      function handleDrop(e, dropIndex) {
+        e.preventDefault();
+        e.currentTarget.classList.remove("bg-zinc-700");
+        if (dragQueueIndex === null || dragQueueIndex === dropIndex) return;
+        const draggedSong = userQueue.splice(dragQueueIndex, 1)[0];
+        userQueue.splice(dropIndex, 0, draggedSong);
+        dragQueueIndex = null;
+        renderQueue();
+      }
+
+      function removeFromQueue(index) {
+        userQueue.splice(index, 1);
+        renderQueue();
+      }
+
+      function renderQueue() {
+        const queueView = document.getElementById("queueView");
+        if (userQueue.length === 0) {
+          queueView.innerHTML = `<div class="text-center text-gray-500 mt-10 text-sm">
+            <i class="fa-solid fa-list text-4xl mb-3 opacity-50"></i>
+            <p>Your queue is empty.</p>
+          </div>`;
+          return;
+        }
+
+        let html =
+          '<div class="px-2 py-3 text-xs font-bold text-gray-400 uppercase tracking-widest border-b border-zinc-800 mb-2">Up Next</div><div class="flex flex-col gap-1">';
+        userQueue.forEach((song, index) => {
+          html += `
+            <div draggable="true" 
+                 ondragstart="handleDragStart(event, ${index})" 
+                 ondragover="event.preventDefault(); event.currentTarget.classList.add('bg-zinc-700')" 
+                 ondragleave="event.currentTarget.classList.remove('bg-zinc-700')" 
+                 ondrop="handleDrop(event, ${index})" 
+                 ondragend="event.target.classList.remove('opacity-50')"
+                 class="flex items-center gap-3 p-2 hover:bg-zinc-800 rounded group transition cursor-grab active:cursor-grabbing">
+              <div class="w-4 flex flex-col items-center justify-center text-gray-500 opacity-50 group-hover:opacity-100">
+                <i class="fa-solid fa-grip-vertical text-xs mb-1"></i>
+                <span class="text-[10px] font-mono leading-none">${index + 1}</span>
+              </div>
+              <div class="relative w-10 h-10 flex-shrink-0">
+                <img src="${song.artworkUrl100}" class="w-full h-full rounded opacity-70 group-hover:opacity-100 transition">
+              </div>
+              <div class="flex-grow min-w-0">
+                <h4 class="text-sm font-semibold truncate text-white">${song.trackName}</h4>
+                <p class="text-xs text-gray-400 truncate">${song.artistName}</p>
+              </div>
+              <button onclick="removeFromQueue(${index})" class="text-gray-400 hover:text-red-500 px-2 opacity-0 group-hover:opacity-100 transition flex-shrink-0" title="Remove from Queue">
+                <i class="fa-solid fa-trash text-xs"></i>
+              </button>
+            </div>
+          `;
+        });
+        html += "</div>";
+        queueView.innerHTML = html;
+      }
+
+      function playNextSong() {
+        if (userQueue.length > 0) {
+          const nextQueuedSong = userQueue.shift();
+          renderQueue();
+          executePlay(nextQueuedSong);
+          return;
+        }
+
+        if (currentPlaylist.length === 0) return;
+        let nextIndex = currentSongIndex + 1;
+        if (nextIndex >= currentPlaylist.length) nextIndex = 0; // loop back to start
+        playSong(nextIndex);
+      }
+
+      function playPrevSong() {
+        if (currentPlaylist.length === 0) return;
+        let prevIndex = currentSongIndex - 1;
+        if (prevIndex < 0) prevIndex = currentPlaylist.length - 1; // loop to end
+        playSong(prevIndex);
+      }
+
+      function toggleMainPlay() {
+        if (!currentPlayingUrl) return;
+
+        if (audio.paused) {
+          audio.play();
+          isPlaying = true;
+        } else {
+          audio.pause();
+          isPlaying = false;
+        }
+        updatePlayButton();
+      }
+
+      function updatePlayButton() {
+        const floatingMusicIcon = document.getElementById("floatingMusicIcon");
+        if (isPlaying) {
+          mainPlayBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+          if (floatingMusicIcon)
+            floatingMusicIcon.className =
+              "fa-solid fa-compact-disc fa-spin text-2xl text-[#EAE0CF]";
+        } else {
+          mainPlayBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+          if (floatingMusicIcon)
+            floatingMusicIcon.className =
+              "fa-solid fa-music text-2xl text-[#EAE0CF]";
+        }
+      }
+
+      // Audio Event Listeners
+      audio.addEventListener("timeupdate", () => {
+        if (audio.duration) {
+          const progressPercent = (audio.currentTime / audio.duration) * 100;
+          progressBar.value = progressPercent;
+          currentTimeDisplay.textContent = formatTime(audio.currentTime);
+        }
+      });
+
+      audio.addEventListener("ended", () => {
+        playNextSong();
+      });
+
+      // Seek using progress bar
+      progressBar.addEventListener("input", (e) => {
+        if (audio.duration) {
+          const seekTime = (e.target.value / 100) * audio.duration;
+          audio.currentTime = seekTime;
+        }
+      });
+
+      // Volume control
+      if (volumeBar) {
+        volumeBar.addEventListener("input", (e) => {
+          audio.volume = e.target.value;
+        });
+      }
+
+      // Project Modal Handlers Removed
+
+      // Form submission via AJAX to Formsubmit.co
+      function submitContactForm(event) {
+        event.preventDefault();
+        const form = event.target;
+        const btn = form.querySelector('button[type="submit"]');
+        const originalText = btn.innerText;
+
+        btn.innerText = "MENGIRIM...";
+        btn.disabled = true;
+
+        fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          body: new FormData(form),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              Swal.fire({
+                title: "Berhasil!",
+                text: "Pesan Anda telah meluncur ke email saya.",
+                icon: "success",
+                confirmButtonColor: "#4B5694",
+                customClass: {
+                  popup: "premium-card",
+                  title: "text-[#111844] font-serif-custom",
+                },
+              });
+              form.reset();
+              btn.innerText = "TERKIRIM ✓";
+              setTimeout(() => {
+                btn.innerText = originalText;
+                btn.disabled = false;
+              }, 3000);
+            } else {
+              throw new Error(
+                data.message || "Terjadi kesalahan pada server form.",
+              );
+            }
+          })
+          .catch((error) => {
+            Swal.fire({
+              title: "Oops...",
+              text: "Terjadi kesalahan saat mengirim pesan. Silakan coba lagi nanti.",
+              icon: "error",
+              confirmButtonColor: "#111844",
+              customClass: {
+                popup: "premium-card",
+              },
+            });
+            btn.innerText = originalText;
+            btn.disabled = false;
+          });
+      }
+
+      // View Certificate Image Fullscreen
+      function viewCertificate(imageSrc, title) {
+        Swal.fire({
+          title: `<span class="font-serif-custom text-[#EAE0CF] text-2xl">${title}</span>`,
+          imageUrl: imageSrc,
+          imageAlt: title,
+          customClass: {
+            popup: "bg-[#111844] rounded-2xl border border-[#4B5694]",
+            image: "rounded-xl max-h-[75vh] object-contain shadow-2xl mt-4",
+          },
+          showConfirmButton: false,
+          showCloseButton: true,
+          closeButtonHtml:
+            '<i class="fa-solid fa-xmark text-[#EAE0CF] text-2xl hover:text-white transition"></i>',
+          background: "#111844",
+          width: "auto",
+          padding: "2rem",
+        });
+      }
+    </script>
+
+    <!-- 3D Animation Scripts (Vanilla-Tilt, Vanta.js, & AOS) -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+    <script>
+      // Initialize 3D Card Hover Effects
+      VanillaTilt.init(document.querySelectorAll(".premium-card"), {
+        max: 5,
+        speed: 400,
+        glare: true,
+        "max-glare": 0.1,
+      });
+
+      // Initialize AOS (Animate On Scroll)
+      AOS.init({
+        once: true,
+        duration: 800,
+        offset: 100,
+      });
+
+      // Initialize 3D Network Background
+      VANTA.NET({
+        el: "#vanta-bg",
+        mouseControls: true,
+        touchControls: true,
+        gyroControls: false,
+        minHeight: 200.0,
+        minWidth: 200.0,
+        scale: 1.0,
+        scaleMobile: 1.0,
+        color: 0x4b5694,
+        backgroundColor: 0xeae0cf,
+        points: 8.0,
+        maxDistance: 18.0,
+        spacing: 20.0,
+      });
+    </script>
+  </body>
+</html>
